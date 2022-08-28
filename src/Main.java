@@ -8,6 +8,7 @@ import java.io.*;
 
 public class Main {
     private static final StringBuilder sb = new StringBuilder();
+    static int saveCount = 1;
     public static void main(String[] args) {
 
         List<String> folders1 = Arrays.asList("src", "res", "savegames", "temp", "src/main", "src/test", "res/drawables", "res/vectors", "res/icons");
@@ -15,10 +16,31 @@ public class Main {
 
         folders1.forEach(f -> folderCreation(f));
         files.forEach(f -> fileCreation(f));
+
+        List<GameProgress> savesList = Arrays.asList(
+                new GameProgress(12, 1, 11, 5.7),
+                new GameProgress(1, 0, 3, 0.5),
+                new GameProgress(13, 2, 5, 1.2));
+
+        savesList.forEach(s -> {
+
+            saveCreation(s);
+            saveCount++;
+        });
+
         tempWrite(sb);
 
-        System.out.println(sb);
+//        System.out.println(sb);
 
+    }
+
+    public static void saveCreation (GameProgress data) {
+        try (FileOutputStream out = new FileOutputStream("C://Users//user/Games/savegames/save" + saveCount + ".dat");
+             ObjectOutputStream oos = new ObjectOutputStream(out)){
+            oos.writeObject(data);
+        } catch (IOException ex) {
+            System.out.println (ex.getMessage());
+        }
     }
 
     public static void tempWrite (StringBuilder str) {
